@@ -316,3 +316,218 @@ Notas rápidas:
 - `terraform init` usa este archivo para descargar los proveedores y conectarse al backend de S3.
 - El backend remoto (S3 + DynamoDB) es la práctica estándar número uno para trabajar en equipo de forma segura.
 - El archivo `.terraform.lock.hcl` (que SÍ debe subirse a Git) se genera basándose en estas restricciones de versión.
+
+---
+
+# Comandos Basicos de terraform
+## Inicializacion
+```bash
+# Inicializar el directorio dee trabajo
+terraform init
+
+# Reinicializar forzando descarga de providers
+terraform init -upgrade
+
+# Inicializar con backend especifico
+terraform init -backend-config="bucket=my-tf-state"
+```
+## Validacion
+```bash
+# Validar sintaxis de configuración
+terraform validate
+
+# Formatear código automáticamente
+terraform fmt
+
+# Formatear recursivamente
+terraform fmt -recursive
+
+# Solo verificar formato (sin cambiar)
+terraform fmt -check
+```
+## Planificacion
+```bash
+# Ver qué cambios se aplicarán
+terraform plan
+
+# Guardar plan en archivo
+terraform plan -out=tfplan
+
+# Plan con variables específicas
+terraform plan -var="student_name=Roxs"
+
+# Plan con archivo de variables
+terraform plan -var-file="prod.tfvars"
+
+# Plan mostrando solo cambios
+terraform plan -compact-warnings
+```
+## Aplicacion
+```bash
+# Aplicar cambios (pide confirmación)
+terraform apply
+
+# Aplicar sin confirmación
+terraform apply -auto-approve
+
+# Aplicar plan guardado
+terraform apply tfplan
+
+# Aplicar con variables
+terraform apply -var="student_name=TuNombre"
+```
+## Inspeccion
+```bash
+# Ver estado actual
+terraform show
+
+# Listar recursos en estado
+terraform state list
+
+# Ver detalles de un recurso
+terraform state show local_file.devops_journey
+
+# Ver outputs
+terraform output
+
+# Ver output específico
+terraform output generated_files
+```
+## Destruccion
+```bash
+# Destruir todos los recursos
+terraform destroy
+
+# Destruir sin confirmación
+terraform destroy -auto-approve
+
+# Destruir recursos específicos
+terraform destroy -target=local_file.terraform_config
+```
+
+---
+
+# Conceptos clave explicados
+## PROVIDERS
+Los providers son plugins que permiten a Terraform interactuar con APIs:
+```tf
+# Provider para AWS
+provider "aws" {
+  region = "us-east-1"
+}
+
+# Provider para Docker
+provider "docker" {
+  host = "unix:///var/run/docker.sock"
+}
+
+# Provider para Kubernetes
+provider "kubernetes" {
+  config_path = "~/.kube/config"
+}
+
+# Provider para múltiples clouds
+provider "azurerm" {
+  features {}
+}
+```
+## RESOURCES
+Los resources son los componentes de infraestructura:
+```tf
+# Sintaxis general
+resource "tipo_provider_recurso" "nombre_local" {
+  argumento1 = "valor1"
+  argumento2 = "valor2"
+  
+  # Bloque anidado
+  configuracion {
+    opcion = "valor"
+  }
+  
+  # Meta-argumentos
+  depends_on = [otro_recurso.ejemplo]
+  count      = 3
+  
+  # Lifecycle
+  lifecycle {
+    prevent_destroy = true
+  }
+}
+```
+## STATE MANAGEMENT
+Terraform mantiene un estado que:
+```plaintext
+# ¿Qué contiene el estado?
+✅ Mapeo entre configuración y recursos reales
+✅ Metadatos de recursos
+✅ Dependencias entre recursos
+✅ Configuración de providers
+
+# ¿Por qué es importante?
+✅ Detecta cambios (drift detection)
+✅ Optimiza operaciones (parallelization)
+✅ Permite rollbacks seguros
+✅ Habilita colaboración en equipo
+```
+### Comandos de Estado
+```bash
+# Backup manual del estado
+cp terraform.tfstate terraform.tfstate.backup
+
+# Importar recurso existente
+terraform import aws_instance.example i-1234567890abcdef0
+
+# Remover recurso del estado (sin destruir)
+terraform state rm aws_instance.example
+
+# Mover recurso en el estado
+terraform state mv aws_instance.old aws_instance.new
+
+# Actualizar estado con infraestructura real
+terraform refresh
+```
+## Variables y Tipos
+```tf
+# Tipos básicos
+variable "string_example" {
+  type    = string
+  default = "hello"
+}
+
+variable "number_example" {
+  type    = number
+  default = 42
+}
+
+variable "bool_example" {
+  type    = bool
+  default = true
+}
+
+# Tipos complejos
+variable "list_example" {
+  type    = list(string)
+  default = ["item1", "item2", "item3"]
+}
+
+variable "map_example" {
+  type = map(string)
+  default = {
+    key1 = "value1"
+    key2 = "value2"
+  }
+}
+
+variable "object_example" {
+  type = object({
+    name    = string
+    age     = number
+    active  = bool
+  })
+  default = {
+    name   = "example"
+    age    = 30
+    active = true
+  }
+}
+```
