@@ -531,3 +531,24 @@ variable "object_example" {
   }
 }
 ```
+
+## DATA SOURCES
+Para consultar informacion existente:
+```tf
+# Consultar AMI más reciente
+data "aws_ami" "latest_amazon_linux" {
+  most_recent = true
+  owners      = ["amazon"]
+  
+  filter {
+    name   = "name"
+    values = ["amzn2-ami-hvm-*-x86_64-gp2"]
+  }
+}
+
+# Usar data source en recurso
+resource "aws_instance" "example" {
+  ami           = data.aws_ami.latest_amazon_linux.id
+  instance_type = "t3.micro"
+}
+```

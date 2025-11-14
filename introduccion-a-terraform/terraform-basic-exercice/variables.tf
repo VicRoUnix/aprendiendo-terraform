@@ -1,28 +1,28 @@
 variable "student_name" {
   description = "Nombre del estudiante DevOps"
-  type = string
+  type        = string
 
   validation {
-    condition = length(var.student_name) >= 2
+    condition     = length(var.student_name) >= 2
     error_message = "El nombre debe tener al menos 2 caracteres."
   }
 }
 
 variable "github_user" {
   description = "Usuario de GitHub"
-  type = string
-  default = "devops-student"
+  type        = string
+  default     = "devops-student"
 }
 
 variable "favorite_lenguage" {
   description = "Lenguaje de programacion favorito"
-  type = string
-  default = "Python"
+  type        = string
+  default     = "Python"
 
   validation {
     condition = contains([
-    "Python", "JavaScript", "Go", "Rust", "Java", "C#", "Ruby"
-    ], var.favorite_language)
+      "Python", "JavaScript", "Go", "Rust", "Java", "C#", "Ruby"
+    ], var.favorite_lenguage)
     error_message = "Debe ser un lenguaje soportado."
   }
 }
@@ -35,7 +35,7 @@ variable "project_config" {
     environment = string
     day         = number
   })
-  
+
   validation {
     condition     = var.project_config.day >= 1 && var.project_config.day <= 90
     error_message = "El día debe estar entre 1 y 90."
