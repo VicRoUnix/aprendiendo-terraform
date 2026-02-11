@@ -1,0 +1,28 @@
+🚀 Bienvenido al Día 22 - Terraform Basics
+==========================================
+
+👨‍💻 Estudiante: DevOps Student
+📅 Fecha: 2026-02-11 17:38:38
+📖 Día: 22 del desafío 90 Días de DevOps
+
+🛠️ Herramientas que hemos aprendido:
+  ✅ Docker
+  ✅ Docker Compose
+  ✅ Terraform
+  ✅ GitHub Actions
+  ✅ Kubernetes
+
+🎯 Objetivos de Hoy:
+- Entender qué es Infrastructure as Code
+- Aprender la sintaxis básica de Terraform
+- Crear nuestros primeros recursos
+- Manejar variables y outputs
+
+💡 Recuerda: 
+"La infraestructura como código no es solo una herramienta,
+es una mentalidad que transforma cómo gestionamos la tecnología."
+
+¡Sigue adelante en tu journey DevOps! 🚀
+
+---
+Generado automáticamente por Terraform
