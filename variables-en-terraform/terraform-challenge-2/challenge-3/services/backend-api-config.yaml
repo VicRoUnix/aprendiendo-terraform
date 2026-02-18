@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Service
+metadata:
+    name: backend-api
+    labels:
+        app: appelstore
+        env: prod
+    spec:
+        internal_url: http://backend-api:8080
+        resources: 
+            cpu: 500m
+            memory: 1024Mi
+        health_check:
+            path: /actuator/health
+            port: 8080
+        environment_variables:
+                            ENVIRONMENT: "prod"
+                            SERVICE_NAME: "backend-api"
+                            SERVICE_PORT: "8080"
+            

@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Service
+metadata:
+    name: frontend-web
+    labels:
+        app: appelstore
+        env: prod
+    spec:
+        internal_url: http://frontend-web:3000
+        resources: 
+            cpu: 100m
+            memory: 512Mi
+        health_check:
+            path: /health
+            port: 3000
+        environment_variables:
+                            BACKEND-API_URL: "http://backend-api:8080"
+                            ENVIRONMENT: "prod"
+                            SERVICE_NAME: "frontend-web"
+                            SERVICE_PORT: "3000"
+            
